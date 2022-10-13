@@ -12,9 +12,14 @@ function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = { username, email, password, clgname: collegename };
+    const data = {
+      username: username.current.value,
+      email: email.current.value,
+      password: password.current.value,
+      clgname: collegename.current.value,
+    };
     const user = await registerApi(data);
-    console.log(user);
+    // console.log(user);
     if (user) {
       router.push("/Login");
     }

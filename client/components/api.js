@@ -7,7 +7,7 @@ export const registerApi = async (data) => {
       url: "http://localhost:8080/user/register",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       data: data,
     };
@@ -22,6 +22,24 @@ export const registerApi = async (data) => {
     //   .catch(function (error) {
     //     console.log(error);
     //   });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const loginApi = async (data) => {
+  try {
+    var config = {
+      method: "post",
+      url: "http://localhost:8080/user/login",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    const res = await axios(config);
+    return res;
   } catch (error) {
     console.log(error);
   }

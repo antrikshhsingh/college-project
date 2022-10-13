@@ -1,8 +1,30 @@
 import React, { useRef, useState } from "react";
 import Link from "next/link";
+import { loginApi } from "../components/api";
+import { useRouter } from "next/router";
 
 function Login() {
+  const router = useRouter();
+  const username = useRef();
+  const password = useRef();
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = {
+      username: username.current.value,
+      password: password.current.value,
+    };
+    const user = await loginApi(data);
+    // console.log(user);
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user.data));
+      localStorage.setItem("token", JSON.stringify(user.data.accessToken));
+      console.log(user.accessToken);
+      router.push("/");
+      const auth = localStorage.getItem("user");
+      console.log(auth.accessToken);
+    }
+  };
   return (
     <>
       <div class="bg-white dark:bg-gray-900">
@@ -34,19 +56,20 @@ function Login() {
               </div>
 
               <div class="mt-8">
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div>
                     <label
                       for="email"
                       class="block mb-2 text-sm text-gray-600 dark:text-gray-200"
                     >
-                      Email Address
+                      Username
                     </label>
                     <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      placeholder="example@example.com"
+                      ref={username}
+                      type="text"
+                      name="username"
+                      id="username"
+                      placeholder="Enter your username"
                       class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
                   </div>
@@ -62,6 +85,7 @@ function Login() {
                     </div>
 
                     <input
+                      ref={password}
                       type="password"
                       name="password"
                       id="password"
